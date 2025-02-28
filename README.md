@@ -1,4 +1,4 @@
-# Ray Tracing Renderer with BVH Acceleration
+# Ray Tracer with BVH Acceleration
 This project implements a simple ray tracer using a Bounding Volume Hierarchy (BVH) tree for efficient ray-object intersection tests. The ray tracer reads a 3D model from an .obj file, builds a BVH tree, and renders the scene using ray tracing.
 
 ## Features
