@@ -7,4 +7,3 @@ A python codebase for BVH tree traverse and triangle rendering
 3. Renamed AABB_intersect & triangle_intersect to help distinguish 
 4. Replaced complex np functions with math
 
-![[Pasted image 20250228172506.png]]
