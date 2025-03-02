@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 from bvh import AABB, BVHNode, compute_bbox, build_bvh
 from triangle import Triangle
 from read_triangle import read_obj_file
+from gaussian import Gaussian3D
 
 # ray tracing based on stack
 def trace_ray(ray_origin, ray_dir, node):
@@ -20,9 +21,13 @@ def trace_ray(ray_origin, ray_dir, node):
 
         if current_node.objects:
             for obj in current_node.objects:
-                t = obj.triangle_intersect(ray_origin, ray_dir)
-                #if t is not None:
-                    #print(f"Intersection found at t = {t} with object")
+                if(not USE_3DGS):
+                    t = obj.triangle_intersect(ray_origin, ray_dir)
+                    #if t is not None:
+                        #print(f"Intersection found at t = {t} with object")
+                else:
+                    t = obj.gaussian_intersect(ray_origin, ray_dir)
+                
                 if t is not None and (closest is None or t < closest[0]):
                     closest = (t, obj)
         else:
@@ -33,9 +38,16 @@ def trace_ray(ray_origin, ray_dir, node):
 
 #  read .obj file
 if USE_3DGS:
-    print("Using 3DGS data")
-    #from gaussian_utils import load_3dgs_data  # 你的3DGS数据加载函数
-    #gaussian_params = load_3dgs_data("path/to/your/3dgs_data")
+    num_gaussians = 10
+    gaussians = []
+    for _ in range(num_gaussians):
+        center = [np.random.uniform(-10, 10) for _ in range(3)]
+        color = [np.random.uniform(0, 1) for _ in range(3)]
+        opacity = np.random.uniform(0.1, 1)
+        scale = np.random.uniform(1, 3)
+        gaussian = Gaussian3D(center, color, opacity, scale)
+        gaussians.append(gaussian)
+    objects = gaussians
 else:
     file_path = r'models\bunny\bunny.obj'
     objects = read_obj_file(file_path)
